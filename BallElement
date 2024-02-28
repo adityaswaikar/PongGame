@@ -11,7 +11,7 @@ public class BallElement extends Polygon{
 	public BallElement(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
 		
-		this.inShape = inShape;
+		this.inShape = getPoints();
 		this.inPosition = inPosition;
 		this.inRotation = inRotation;
 		
