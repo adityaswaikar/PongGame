@@ -19,13 +19,23 @@ public class Pong extends Game {
     this.setFocusable(true);
 	this.requestFocus();
 	
-	Point [] shape = new Point[4];
-	shape[0] = new Point(0,0);
-	shape[1] = new Point(10,0);
-	shape[2] = new Point(10,10);
-	shape[3] = new Point(0, 10);
+	Point [] ballPoint = new Point[4];
+	ballPoint[0] = new Point(0,0);
+	ballPoint[1] = new Point(10,0);
+	ballPoint[2] = new Point(10,10);
+	ballPoint[3] = new Point(0, 10);
 	
-	ball = new BallElement(shape, new Point(3, 4), 0 );
+	ball = new BallElement(ballPoint, new Point(3, 4), 0 );
+
+	Point [] userPaddlePoint = new Point[4]; 
+	userPaddlePoint[0] = new Point(0,0);
+	userPaddlePoint[1] = new Point(30,0);
+	userPaddlePoint[2] = new Point(30,50);
+	userPaddlePoint[3] = new Point(0,50);
+
+	user = new UserPaddle(userPaddlePoint, new Point (15, 300), 0);
+
+
 	
   }
   
