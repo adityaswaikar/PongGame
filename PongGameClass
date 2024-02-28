@@ -1,45 +1,49 @@
 package game;
 
-import java.awt.Graphics;
+/*
+CLASS: YourGameNameoids
+DESCRIPTION: Extending Game, YourGameName is all in the paint method.
+NOTE: This class is the metaphorical "main method" of your program,
+      it is your control center.
 
-public class BallElement extends Polygon{
+*/
+import java.awt.*;
+import java.awt.event.*;
+
+public class Pong extends Game {
+	static int counter = 0;
 	
-	private Point[] inShape;
-	private Point inPosition;
-	private double inRotation;
+	BallElement ball;
+  public Pong() {
+    super("YourGameName!",800,600);
+    this.setFocusable(true);
+	this.requestFocus();
 	
-	public BallElement(Point[] inShape, Point inPosition, double inRotation) {
-		super(inShape, inPosition, inRotation);
-		
-		this.inShape = inShape;
-		this.inPosition = inPosition;
-		this.inRotation = inRotation;
-		
-	}
+	Point [] shape = new Point[4];
+	shape[0] = new Point(0,0);
+	shape[1] = new Point(10,0);
+	shape[2] = new Point(10,10);
+	shape[3] = new Point(0, 10);
 	
+	ball = new BallElement(shape, new Point(3, 4), 0 );
 	
-	void paint(Graphics brush) {
-		int[] xCoord = new int[inShape.length];
-		int[] yCoord = new int[inShape.length];
-		
-		
-		for(int i = 0; i < this.inShape.length; i++){
-			xCoord[i] = (int)this.inShape[i].getX();
-			yCoord[i] = (int)this.inShape[i].getY();
-		}
-		
-		
-		brush.fillPolygon(xCoord, yCoord, 4);
-	}
-	
-	public Point[] getShape() {
-		return getShape();
-	}
-	
-	public Point getPosition() {
-		return inPosition;
-	}
-	
-	public double getRotation() {
-		return inRotation;
-	}
+  }
+  
+	public void paint(Graphics brush) {
+    	brush.setColor(Color.black);
+    	brush.fillRect(0,0,width,height);
+    	
+    	// sample code for printing message for debugging
+    	// counter is incremented and this message printed
+    	// each time the canvas is repainted
+    	counter++;
+    	brush.setColor(Color.white);
+    	brush.drawString("Counter is " + counter,10,10);
+    	ball.paint(brush);
+  }
+  
+	public static void main (String[] args) {
+   		Pong a = new Pong();
+		a.repaint();
+  }
+}
