@@ -1,0 +1,47 @@
+package game;
+
+import java.awt.Graphics;
+
+public class UserPaddle extends Polygon {
+	
+	private Point[] inShape;
+	private Point inPosition;
+	private double inRotation;
+	
+	public UserPaddle(Point[] inShape, Point inPosition, double inRotation) {
+		super(inShape, inPosition, inRotation);
+		
+		this.inShape = getPoints();
+		this.inPosition = inPosition;
+		this.inRotation = inRotation;
+		
+	}
+	
+	
+	void paint(Graphics brush) {
+		int[] xCoord = new int[inShape.length];
+		int[] yCoord = new int[inShape.length];
+		
+		
+		for(int i = 0; i < this.inShape.length; i++){
+			xCoord[i] = (int)this.inShape[i].getX();
+			yCoord[i] = (int)this.inShape[i].getY();
+		}
+		
+		
+		brush.fillPolygon(xCoord, yCoord, 4);
+	}
+	
+	public Point[] getShape() {
+		return getShape();
+	}
+	
+	public Point getPosition() {
+		return inPosition;
+	}
+	
+	public double getRotation() {
+		return inRotation;
+	}
+
+}
