@@ -1,18 +1,19 @@
 package game;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
-public class PaddleElement extends Polygon {
+public class Ship extends Polygon {
 
 	private Point[] inShape;
 	private Point inPosition;
 	private double inRotation;
 
-	private boolean moveUp, moveDown, move = true;
+	private boolean moveUp, moveDown, moveRight, moveLeft, move = true;
 	private static int step = 5;
 
 
-	public PaddleElement(Point[] inShape, Point inPosition, double inRotation) {
+	public Ship(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
 
 		this.inShape = getPoints();
@@ -33,7 +34,7 @@ public class PaddleElement extends Polygon {
 		}
 
 
-		brush.fillPolygon(xCoord, yCoord, 4);
+		brush.fillPolygon(xCoord, yCoord, 7);
 	}
 
 	public void move() {
@@ -43,7 +44,15 @@ public class PaddleElement extends Polygon {
 					p.y -= step;
 				} else if (moveDown && p.y <= 570) {
 					p.y += step;
-				} else {
+				} 
+				else if (moveRight && p.x >=0) { 
+					p.x+=step;
+					
+				}else if(moveLeft && p.x <= 800) {
+					p.x -= step;
+				}
+					
+				else {
 					moveOnOff(false);
 				}
 
@@ -63,12 +72,18 @@ public class PaddleElement extends Polygon {
 		return inRotation;
 	}
 
-	public void setMove(boolean up, boolean down) {
+	public void setMove(boolean up, boolean down, boolean right, boolean left) {
 		moveUp = up;
 		moveDown = down;
+		moveRight = right; 
+		moveLeft = left; 
 	}
 
 	public void moveOnOff(boolean b) {
 		move = b;
 	}
+	
+
+
+	
 }
