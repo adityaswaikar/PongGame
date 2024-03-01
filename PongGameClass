@@ -9,15 +9,17 @@ NOTE: This class is the metaphorical "main method" of your program,
  */
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.KeyListener;
 
-public class Pong extends Game {
+public class Pong extends Game implements KeyListener  {
 	private static final long serialVersionUID = 1L;
 
 	static int counter = 0;
 
 	BallElement ball;
 
-	PaddleElement user, computer;
+	Ship user;
+
 
 	public Pong() {
 		super("PONG",800,600);
@@ -32,24 +34,37 @@ public class Pong extends Game {
 
 		ball = new BallElement(ballPoint, new Point(400, 300), 0 );
 
-		Point [] userPaddlePoint = new Point[4]; 
-		userPaddlePoint[0] = new Point(0,0);
-		userPaddlePoint[1] = new Point(30,0);
-		userPaddlePoint[2] = new Point(30,50);
-		userPaddlePoint[3] = new Point(0,50);
+		Point [] ship = new Point[7]; 
+		ship[0] = new Point(0,0);
+		ship[1] = new Point(45,0);
+		ship[2] = new Point(0,20);
+		ship[3] = new Point(45,20);
+		ship[4] = new Point(35,20);
+		ship[5] = new Point(35,5);
+		ship[6] = new Point(45,5);
+		
+		
 
-		user = new PaddleElement(userPaddlePoint, new Point(15, 285), 0);
+		user = new Ship(ship, new Point(15, 285), 0);
 
 
-		Point [] comPaddlePoint = new Point[4]; 
+		/*Point [] comPaddlePoint = new Point[4]; 
 		comPaddlePoint[0] = new Point(0,0);
 		comPaddlePoint[1] = new Point(30,0);
 		comPaddlePoint[2] = new Point(30,50);
-		comPaddlePoint[3] = new Point(0,50);
-
-		computer = new PaddleElement(comPaddlePoint, new Point(770, 285), 0);
+		comPaddlePoint[3] = new Point(0,50);*/
+		this.addKeyListener(this);
+		
 
 	}
+	/*public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        while (keyCode == KeyEvent.VK_UP) {
+            user.setMove(true, false); // Move user paddle up
+        } /*else if (keyCode == KeyEvent.VK_DOWN) {
+            user.setMove(false, true); // Move user paddle down
+        }
+    }*/
 
 	public void paint(Graphics brush) {
 		brush.setColor(Color.black);
@@ -62,17 +77,68 @@ public class Pong extends Game {
 		brush.setColor(Color.white);
 		brush.drawString("Counter is " + counter,10,10);
 		ball.paint(brush);
-		user.setMove(false, true);
-		user.move();
+		
+		/*user.setMove(false, true);
+		user.move();*/
 		user.paint(brush);
 		
-		computer.setMove(true, false);
-		computer.move();
-		computer.paint(brush);
+		
 	}
 
 	public static void main (String[] args) {
 		Pong a = new Pong();
 		a.repaint();
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		 
+		
+		
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        	user.moveOnOff(true);
+            user.setMove(true, false,false,false); 
+            user.move(); 
+        }
+        else if (e.getKeyCode()== KeyEvent.VK_DOWN) {
+        	user.moveOnOff(true);
+            user.setMove(false, true, false,false); 
+            user.move(); 
+        }
+        
+        else if (e.getKeyCode()== KeyEvent.VK_RIGHT) {
+        	user.moveOnOff(true);
+            user.setMove(false, false, true, false); 
+            user.move(); 
+        }
+        else if (e.getKeyCode()== KeyEvent.VK_LEFT) {
+        	user.moveOnOff(true);
+            user.setMove(false, false, false, true); 
+            user.move(); 
+        }
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	    if (e.getKeyCode() == KeyEvent.VK_UP) {
+	        user.moveOnOff(false);
+	    }
+	    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        	user.moveOnOff(false);
+        }
+	    if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+	    	user.moveOnOff(false);
+	    }
+	    if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+	    	user.moveOnOff(false);
+	    }
+		
 	}
 }
