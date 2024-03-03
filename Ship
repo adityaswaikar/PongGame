@@ -1,7 +1,7 @@
 package game;
 
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
+
 
 public class Ship extends Polygon {
 
@@ -9,7 +9,7 @@ public class Ship extends Polygon {
 	private Point inPosition;
 	private double inRotation;
 
-	private boolean moveUp, moveDown, moveRight, moveLeft, move = true;
+	private boolean moveUp, moveDown, rotateDown, rotateUp, move = true;
 	private static int step = 5;
 
 
@@ -39,23 +39,27 @@ public class Ship extends Polygon {
 
 	public void move() {
 		if(move) {
-			for(Point p : inShape) {
-				if(moveUp && p.y >= 0) {
-					p.y -= step;
-				} else if (moveDown && p.y <= 570) {
-					p.y += step;
-				} 
-				else if (moveRight && p.x >=0) { 
-					p.x+=step;
-					
-				}else if(moveLeft && p.x <= 800) {
-					p.x -= step;
-				}
-					
-				else {
-					moveOnOff(false);
+			if(rotateUp) {
+				rotate(5);
+
+			} else if(rotateDown) {
+				rotate(-5);
+
+			}
+			this.inShape = getPoints();
+			if(moveUp) {
+				if(inPosition.y >= 35) {
+					inPosition.y -= step * (Math.sin(Math.toRadians(inRotation)));
+					inPosition.x += step * (Math.cos(Math.toRadians(inRotation)));
 				}
 
+			} else if (moveDown) {
+				if(inPosition.y <= 570) {
+					inPosition.y += step * (Math.sin(Math.toRadians(inRotation)));
+					inPosition.x += step * (Math.cos(Math.toRadians(inRotation)));
+				}
+			} else {
+				moveOnOff(false);
 			}
 		}
 	}
@@ -72,18 +76,22 @@ public class Ship extends Polygon {
 		return inRotation;
 	}
 
-	public void setMove(boolean up, boolean down, boolean right, boolean left) {
+	public void setMove(boolean up, boolean down, boolean rotateDown, boolean rotateUp) {
 		moveUp = up;
 		moveDown = down;
-		moveRight = right; 
-		moveLeft = left; 
+		this.rotateDown= rotateDown; 
+		this.rotateUp = rotateUp; 
 	}
 
 	public void moveOnOff(boolean b) {
 		move = b;
 	}
-	
 
+	public void rotate(double degrees) {
+		inRotation += degrees;
+	}
 
-	
+	public void stopRotate() {
+
+	}
 }
