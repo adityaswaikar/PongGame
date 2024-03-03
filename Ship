@@ -6,11 +6,11 @@ import java.awt.Graphics;
 public class Ship extends Polygon {
 
 	private Point[] inShape;
-	private Point inPosition;
+	protected Point inPosition;
 	private double inRotation;
 
 	private boolean moveUp, moveDown, rotateDown, rotateUp, move = true;
-	private static int step = 5;
+	protected static int step = 5;
 
 
 	public Ship(Point[] inShape, Point inPosition, double inRotation) {
@@ -36,32 +36,29 @@ public class Ship extends Polygon {
 
 		brush.fillPolygon(xCoord, yCoord, 7);
 	}
-
+	
+	
 	public void move() {
-		if(move) {
-			if(rotateUp) {
-				rotate(5);
-
-			} else if(rotateDown) {
-				rotate(-5);
-
-			}
-			this.inShape = getPoints();
-			if(moveUp) {
-				if(inPosition.y >= 35) {
-					inPosition.y -= step * (Math.sin(Math.toRadians(inRotation)));
-					inPosition.x += step * (Math.cos(Math.toRadians(inRotation)));
-				}
-
-			} else if (moveDown) {
-				if(inPosition.y <= 570) {
-					inPosition.y += step * (Math.sin(Math.toRadians(inRotation)));
-					inPosition.x += step * (Math.cos(Math.toRadians(inRotation)));
-				}
-			} else {
-				moveOnOff(false);
-			}
-		}
+	    if (move) {
+	        if (rotateUp) {
+	            rotate(5);
+	        } else if (rotateDown) {
+	            rotate(-5);
+	        }
+	        this.inShape = getPoints();
+	        if (moveUp || moveDown) {
+	            double radians = Math.toRadians(inRotation);
+	            int x = (int) (step * Math.sin(radians));
+	            int y = (int) (step * Math.cos(radians));
+	            if (moveUp) {
+	                inPosition.y -= y;
+	                inPosition.x += x;
+	            } else if (moveDown) {
+	                inPosition.y += y;
+	                inPosition.x -= x;
+	            }
+	        }
+	    }
 	}
 
 	public Point[] getShape() {
@@ -76,7 +73,7 @@ public class Ship extends Polygon {
 		return inRotation;
 	}
 
-	public void setMove(boolean up, boolean down, boolean rotateDown, boolean rotateUp) {
+	public void setMove(boolean up, boolean down,boolean rotateUp, boolean rotateDown) {
 		moveUp = up;
 		moveDown = down;
 		this.rotateDown= rotateDown; 
