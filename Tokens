@@ -2,13 +2,13 @@ package game;
 
 import java.awt.Graphics;
 
-public class BallElement extends Polygon{
+public class Tokens extends Polygon{
 	
 	private Point[] inShape;
 	private Point inPosition;
 	private double inRotation;
 	
-	public BallElement(Point[] inShape, Point inPosition, double inRotation) {
+	public Tokens(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
 		
 		this.inShape = getPoints();
