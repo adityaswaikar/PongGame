@@ -11,28 +11,23 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.KeyListener;
 
-public class Pong extends Game implements KeyListener  {
+public class ShipGame extends Game implements KeyListener  {
 	private static final long serialVersionUID = 1L;
 
 	static int counter = 0;
 
-	BallElement ball;
+	Tokens token;
 
 	Ship user;
 
+	Tokens[] tokens;
 
-	public Pong() {
-		super("PONG",800,600);
+	public ShipGame() {
+		super("ShipGame!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
 
-		Point [] ballPoint = new Point[4];
-		ballPoint[0] = new Point(0,0);
-		ballPoint[1] = new Point(10,0);
-		ballPoint[2] = new Point(10,10);
-		ballPoint[3] = new Point(0, 10);
-
-		ball = new BallElement(ballPoint, new Point(400, 300), 0 );
+		tokens = generateTokens();
 
 		Point [] ship = new Point[7]; 
 		ship[0] = new Point(0,0);
@@ -42,19 +37,13 @@ public class Pong extends Game implements KeyListener  {
 		ship[4] = new Point(35,20);
 		ship[5] = new Point(35,5);
 		ship[6] = new Point(45,5);
-		
-		
+
 
 		user = new Ship(ship, new Point(15, 285), 0);
 
 
-		/*Point [] comPaddlePoint = new Point[4]; 
-		comPaddlePoint[0] = new Point(0,0);
-		comPaddlePoint[1] = new Point(30,0);
-		comPaddlePoint[2] = new Point(30,50);
-		comPaddlePoint[3] = new Point(0,50);*/
 		this.addKeyListener(this);
-		
+
 
 	}
 	/*public void keyPressed(KeyEvent e) {
@@ -76,69 +65,97 @@ public class Pong extends Game implements KeyListener  {
 		counter++;
 		brush.setColor(Color.white);
 		brush.drawString("Counter is " + counter,10,10);
-		ball.paint(brush);
+		token.paint(brush);
 		
+		for(Tokens t : tokens) {
+			t.paint(brush);
+		}
+
 		/*user.setMove(false, true);
 		user.move();*/
 		user.paint(brush);
-		
-		
+
+
 	}
 
 	public static void main (String[] args) {
-		Pong a = new Pong();
+		ShipGame a = new ShipGame();
 		a.repaint();
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {
-		 
-		
-		
+
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-        	user.moveOnOff(true);
-            user.setMove(true, false,false,false); 
-            user.move(); 
-        }
-        else if (e.getKeyCode()== KeyEvent.VK_DOWN) {
-        	user.moveOnOff(true);
-            user.setMove(false, true, false,false); 
-            user.move(); 
-        }
-        
-        else if (e.getKeyCode()== KeyEvent.VK_RIGHT) {
-        	user.moveOnOff(true);
-            user.setMove(false, false, true, false); 
-            user.move(); 
-        }
-        else if (e.getKeyCode()== KeyEvent.VK_LEFT) {
-        	user.moveOnOff(true);
-            user.setMove(false, false, false, true); 
-            user.move(); 
-        }
-		
+
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			user.moveOnOff(true);
+			user.setMove(true, false,false,false); 
+			user.move(); 
+		}
+		else if (e.getKeyCode()== KeyEvent.VK_DOWN) {
+			user.moveOnOff(true);
+			user.setMove(false, true, false,false); 
+			user.move(); 
+		}
+
+		else if (e.getKeyCode()== KeyEvent.VK_RIGHT) {
+			user.moveOnOff(true);
+			user.setMove(false, false, true,false); 
+			user.move(); 
+		}
+		else if (e.getKeyCode()== KeyEvent.VK_LEFT) {
+			user.moveOnOff(true);
+			user.setMove(false, false, false,true); 
+			user.move(); 
+		}
+
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
-	    if (e.getKeyCode() == KeyEvent.VK_UP) {
-	        user.moveOnOff(false);
-	    }
-	    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-        	user.moveOnOff(false);
-        }
-	    if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-	    	user.moveOnOff(false);
-	    }
-	    if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-	    	user.moveOnOff(false);
-	    }
-		
+
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			user.moveOnOff(false);
+		}
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			user.moveOnOff(false);
+		}
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			user.stopRotate();
+		}
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			user.stopRotate();
+		}
+
 	}
+
+	public Tokens[] generateTokens() {
+		int randomX = (int) (Math.random() * (751) + 50);
+		int randomY = (int)(Math.random() * (551) + 50);
+		int randomNum = (int) (Math.random() * 10);
+
+		Point [] tokenPoint = new Point[4];
+		tokenPoint[0] = new Point(0,0);
+		tokenPoint[1] = new Point(10,0);
+		tokenPoint[2] = new Point(10,10);
+		tokenPoint[3] = new Point(0, 10);
+
+		token = new Tokens(tokenPoint, new Point(randomX, randomY), 0 );
+
+		Tokens[] things = new Tokens[randomNum];
+		things[0] = token;
+
+		for(int i = 1; i < randomNum; i++) {
+			int yCount = randomY * i;
+			things[i] = new Tokens(tokenPoint, new Point(randomX, yCount), 0);
+		}
+		
+		return things;
+
+	}
+
 }
