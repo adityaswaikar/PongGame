@@ -46,14 +46,7 @@ public class ShipGame extends Game implements KeyListener  {
 
 
 	}
-	/*public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        while (keyCode == KeyEvent.VK_UP) {
-            user.setMove(true, false); // Move user paddle up
-        } /*else if (keyCode == KeyEvent.VK_DOWN) {
-            user.setMove(false, true); // Move user paddle down
-        }
-    }*/
+	
 
 	public void paint(Graphics brush) {
 		brush.setColor(Color.black);
@@ -89,30 +82,23 @@ public class ShipGame extends Game implements KeyListener  {
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			user.moveOnOff(true);
-			user.setMove(true, false,false,false); 
-			user.move(); 
-		}
-		else if (e.getKeyCode()== KeyEvent.VK_DOWN) {
-			user.moveOnOff(true);
-			user.setMove(false, true, false,false); 
-			user.move(); 
-		}
-
-		else if (e.getKeyCode()== KeyEvent.VK_RIGHT) {
-			user.moveOnOff(true);
-			user.setMove(false, false, true,false); 
-			user.move(); 
-		}
-		else if (e.getKeyCode()== KeyEvent.VK_LEFT) {
-			user.moveOnOff(true);
-			user.setMove(false, false, false,true); 
-			user.move(); 
-		}
-
+	    if (e.getKeyCode() == KeyEvent.VK_UP) {
+	        user.setMove(true, false,false, false);
+	        user.moveOnOff(true);
+	        user.move();
+	    } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+	        user.setMove(false, true, false, false);
+	        user.moveOnOff(true);
+	        user.move();
+	    } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+	        user.moveOnOff(true);
+	        user.setMove(false, false, true,false);
+	        user.move();
+	    } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+	        user.moveOnOff(true);
+	        user.setMove(false, false, false,true);
+	        user.move();
+	    }
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
