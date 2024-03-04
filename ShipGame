@@ -20,6 +20,8 @@ public class ShipGame extends Game {
 	Ship user;
 
 	Tokens[] tokensGood, tokensBad;
+	Obstacle obstacle; 
+	Obstacle[] obstacles;
 	
 	private int score = 0;
 
@@ -59,6 +61,12 @@ public class ShipGame extends Game {
 		brush.drawString("Time passed: " + counter/100,10,10);
 		user.move();
 		user.paint(brush);
+		obstacle.paint(brush);
+		for(Obstacle o: obstacles) {
+			brush.setColor(Color.BLUE);
+			o.paint(brush); 
+			
+		}
 		
 		
 		for(Tokens t : tokensGood) {
@@ -72,6 +80,7 @@ public class ShipGame extends Game {
 		
 		if(counter % 200 == 0) {
 			tokensBad = generateTokens();
+			obstacles = generateObstacle();
 		}
 		
 		if(counter % 400 == 0) {
@@ -103,6 +112,30 @@ public class ShipGame extends Game {
 			randomY = (int)(Math.random() * (900) + 50);
 			things[i] = new Tokens(tokenPoint, new Point(randomX, randomY), 0);
 		}
+		return things;
+	}
+
+	public Obstacle[] generateObstacle() {
+		int randomX = (int) (Math.random() * (751) + 50);
+		int randomY = (int)(Math.random() * (551) + 50);
+		int randomNum = (int) (Math.random() * 10) + 1;
+
+		Point [] obstaclePoint = new Point[4];
+		obstaclePoint[0] = new Point(0,0);
+		obstaclePoint[1] = new Point(10,0);
+		obstaclePoint[2] = new Point(10,10);
+		obstaclePoint[3] = new Point(0, 10);
+
+		obstacle = new Obstacle(obstaclePoint, new Point(randomX, randomY), 0 );
+
+		Obstacle[] things = new Obstacle[randomNum];
+		things[0] = obstacle;
+
+		for(int i = 1; i < randomNum; i++) {
+			int xCount = randomX + (20 * i);
+			things[i] = new Obstacle(obstaclePoint, new Point(xCount, randomY), 0);
+		}
+		
 		return things;
 	}
 	
