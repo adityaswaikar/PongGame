@@ -32,6 +32,7 @@ public class ShipGame extends Game {
 
 		tokensGood = generateTokens();
 		tokensBad = generateTokens();
+		obstacles = generateObstacle();
 
 		Point [] ship = new Point[7]; 
 		ship[0] = new Point(0,0);
