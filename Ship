@@ -1,94 +1,97 @@
 package game;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-public class Ship extends Polygon {
+public class Ship extends Polygon implements KeyListener  {
 
-	private Point[] inShape;
-	protected Point inPosition;
-	private double inRotation;
-
-	private boolean moveUp, moveDown, rotateDown, rotateUp, move = true;
-	protected static int step = 5;
+	private boolean forward = false, left = false, right = false;
+	private int step;
 
 
 	public Ship(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
-
-		this.inShape = getPoints();
-		this.inPosition = inPosition;
-		this.inRotation = inRotation;
-
+		step = 5;
 	}
 
 
 	void paint(Graphics brush) {
-		int[] xCoord = new int[inShape.length];
-		int[] yCoord = new int[inShape.length];
+		int[] xCoord = new int[this.getPoints().length];
+		int[] yCoord = new int[this.getPoints().length];
 
-
-		for(int i = 0; i < this.inShape.length; i++){
-			xCoord[i] = (int)this.inShape[i].getX();
-			yCoord[i] = (int)this.inShape[i].getY();
+		Point[] pray = this.getPoints();
+		
+		for(int i = 0; i < pray.length; i++){
+			xCoord[i] = (int)pray[i].getX();
+			yCoord[i] = (int)pray[i].getY();
 		}
 
 
 		brush.fillPolygon(xCoord, yCoord, 7);
 	}
-	
-	
-	public void move() {
-	    if (move) {
-	        if (rotateUp) {
-	            rotate(5);
-	        } else if (rotateDown) {
-	            rotate(-5);
-	        }
-	        this.inShape = getPoints();
-	        if (moveUp || moveDown) {
-	            double radians = Math.toRadians(inRotation);
-	            int x = (int) (step * Math.sin(radians));
-	            int y = (int) (step * Math.cos(radians));
-	            if (moveUp) {
-	                inPosition.y -= y;
-	                inPosition.x += x;
-	            } else if (moveDown) {
-	                inPosition.y += y;
-	                inPosition.x -= x;
-	            }
-	        }
-	    }
-	}
+
 
 	public Point[] getShape() {
 		return getShape();
 	}
 
 	public Point getPosition() {
-		return inPosition;
+		return position;
 	}
 
 	public double getRotation() {
-		return inRotation;
+		return rotation;
 	}
 
-	public void setMove(boolean up, boolean down,boolean rotateUp, boolean rotateDown) {
-		moveUp = up;
-		moveDown = down;
-		this.rotateDown= rotateDown; 
-		this.rotateUp = rotateUp; 
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
-
-	public void moveOnOff(boolean b) {
-		move = b;
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_W) {
+			this.forward = true;
+		}
+		if (e.getKeyCode()== KeyEvent.VK_D) {
+			this.right = true;
+		}
+		if (e.getKeyCode()== KeyEvent.VK_A) {
+			this.left = true;
+		}
 	}
-
-	public void rotate(double degrees) {
-		inRotation += degrees;
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_W) {
+			this.forward = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_D) {
+			this.right = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_A) {
+			this.left = false;
+		}
 	}
-
-	public void stopRotate() {
-
+	
+	public void move() {
+		if(forward) {
+			double x = position.x + step * Math.cos(Math.toRadians(rotation));
+			double y = position.y + step * Math.sin(Math.toRadians(rotation));
+			
+			if(x >= 0 && x <= 1000 && y >= 0 && y <= 900) {
+				position.x = x;
+				position.y = y;
+			}	
+		}
+		
+		
+		if(right) {
+			rotation += 5;
+		}
+		if(left) {
+			rotation -= 5;
+		}
+		rotation %= 360;
 	}
 }
