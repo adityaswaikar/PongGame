@@ -8,16 +8,14 @@ NOTE: This class is the metaphorical "main method" of your program,
 
  */
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.event.KeyListener;
 
 
-public class ShipGame extends Game implements KeyListener  {
+
+public class ShipGame extends Game {
 	private static final long serialVersionUID = 1L;
 
 	static int counter = 0;
-
-	Tokens token;
+	private boolean isGameOver = false;
 
 	Ship user;
 
@@ -26,7 +24,7 @@ public class ShipGame extends Game implements KeyListener  {
 	private int score = 0;
 
 	public ShipGame() {
-		super("ShipGame!",800,600);
+		super("ShipGame!",1000,1000);
 		this.setFocusable(true);
 		this.requestFocus();
 
@@ -43,21 +41,11 @@ public class ShipGame extends Game implements KeyListener  {
 		ship[6] = new Point(45,5);
 
 
-		user = new Ship(ship, new Point(15, 285), 0);
-
-
-		this.addKeyListener(this);
-
+		user = new Ship(ship, new Point(15, 485), 0);
+		
+		this.addKeyListener(user);
 
 	}
-	/*public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        while (keyCode == KeyEvent.VK_UP) {
-            user.setMove(true, false); // Move user paddle up
-        } /*else if (keyCode == KeyEvent.VK_DOWN) {
-            user.setMove(false, true); // Move user paddle down
-        }
-    }*/
 
 	public void paint(Graphics brush) {
 		brush.setColor(Color.black);
@@ -68,8 +56,8 @@ public class ShipGame extends Game implements KeyListener  {
 		// each time the canvas is repainted
 		counter++;
 		brush.setColor(Color.white);
-		brush.drawString("Counter is " + counter,10,10);
-		token.paint(brush);
+		brush.drawString("Time passed: " + counter/100,10,10);
+		user.move();
 		user.paint(brush);
 		
 		
@@ -82,16 +70,13 @@ public class ShipGame extends Game implements KeyListener  {
 			t.paint(brush);
 		}
 		
-		if(counter % 50 == 0) {
+		if(counter % 200 == 0) {
 			tokensBad = generateTokens();
 		}
 		
-		
-		/*user.setMove(false, true);
-		user.move();*/
-		
-
-
+		if(counter % 400 == 0) {
+			tokensGood = generateTokens();
+		}
 	}
 
 	public static void main (String[] args) {
@@ -99,78 +84,31 @@ public class ShipGame extends Game implements KeyListener  {
 		a.repaint();
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			user.moveOnOff(true);
-			user.setMove(true, false,false,false); 
-			user.move(); 
-		}
-		else if (e.getKeyCode()== KeyEvent.VK_DOWN) {
-			user.moveOnOff(true);
-			user.setMove(false, true, false,false); 
-			user.move(); 
-		}
-
-		else if (e.getKeyCode()== KeyEvent.VK_RIGHT) {
-			user.moveOnOff(true);
-			user.setMove(false, false, true,false); 
-			user.move(); 
-		}
-		else if (e.getKeyCode()== KeyEvent.VK_LEFT) {
-			user.moveOnOff(true);
-			user.setMove(false, false, false,true); 
-			user.move(); 
-		}
-
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			user.moveOnOff(false);
-		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			user.moveOnOff(false);
-		}
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			user.stopRotate();
-		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-			user.stopRotate();
-		}
-
-	}
+	
 
 	public Tokens[] generateTokens() {
-		int randomX = (int) (Math.random() * (751) + 50);
-		int randomY = (int)(Math.random() * (551) + 50);
-		int randomNum = (int) (Math.random() * 10) + 1;
+		int randomX, randomY;
+		int randomNum = (int) (Math.random() * 10) + 5;
 
 		Point [] tokenPoint = new Point[4];
 		tokenPoint[0] = new Point(0,0);
-		tokenPoint[1] = new Point(10,0);
-		tokenPoint[2] = new Point(10,10);
-		tokenPoint[3] = new Point(0, 10);
-
-		token = new Tokens(tokenPoint, new Point(randomX, randomY), 0 );
+		tokenPoint[1] = new Point(20,0);
+		tokenPoint[2] = new Point(20,20);
+		tokenPoint[3] = new Point(0, 20);
 
 		Tokens[] things = new Tokens[randomNum];
-		things[0] = token;
 
-		for(int i = 1; i < randomNum; i++) {
-			int xCount = randomX + (20 * i);
-			things[i] = new Tokens(tokenPoint, new Point(xCount, randomY), 0);
+		for(int i = 0; i < randomNum; i++) {
+			randomX = (int) (Math.random() * (900) + 50);
+			randomY = (int)(Math.random() * (900) + 50);
+			things[i] = new Tokens(tokenPoint, new Point(randomX, randomY), 0);
 		}
-		
 		return things;
 	}
-
+	
+	public void isGameOver() {
+		if(counter/100 > 60) {
+			isGameOver = true;
+		}
+	}
 }
