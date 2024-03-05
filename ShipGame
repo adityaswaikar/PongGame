@@ -21,6 +21,17 @@ public class ShipGame extends Game {
 	Score score;
 	EndGame e;
 
+	
+	/**
+	 * Creates a new instance of the ship game class. Initializes the game 
+	 * window with the title, "ShipGame!" and 1000 x 1000 dimensions. Sets up
+	 * the focus for the game using the appropriate methods. Generates a ship
+	 * polygon, tokensGood, tokensBad, and obstacles. Creates a new ship object, 
+	 * a new instance of the inner class, Score, and a new instance of the inner
+	 * class, EndGame. 
+	 * Adds KeyListener to the ship to allow for movement through keyboard 
+	 * input.
+	 */
 	public ShipGame() {
 		super("ShipGame!",1000,1000);
 		this.setFocusable(true);
@@ -48,13 +59,28 @@ public class ShipGame extends Game {
 
 	}
 
+	
+	/**
+	 * Sets and fills the game window with black. 
+	 * Overrides the paint method to render graphics on the game canvas.
+	 * Increments the counter variable. 
+	 * <p>
+	 * If the game is not over: displays the time passed, 
+	 * changes and paints the position of user, paints the 
+	 * obstacles, tokensGood, and tokensBad, continuously generates new
+	 * obstacles and tokens, and updates score based on collisions with obstacles
+	 * and tokens. 
+	 * <p>
+	 * If the game is over: displays a game over screen with the user's score.
+	 * 
+	 * @param brush a Graphics object that is used to paint the screen and 
+	 * elements
+	 */
 	public void paint(Graphics brush) {
 		brush.setColor(Color.black);
 		brush.fillRect(0,0,width,height);
 
-		// sample code for printing message for debugging
-		// counter is incremented and this message printed
-		// each time the canvas is repainted
+		
 		counter++;
 		e.isGameOver();
 		if(!e.getGameOver()) {
@@ -101,6 +127,11 @@ public class ShipGame extends Game {
 			brush.drawString("Your Score: " + score.getScore(), 445, 350);
 		}
 	}
+	
+	/**
+	 * Creates a new ShipGame object and repaints it. 
+	 * @param args 
+	 */
 
 	public static void main (String[] args) {
 		ShipGame a = new ShipGame();
@@ -108,7 +139,13 @@ public class ShipGame extends Game {
 	}
 
 
-
+	/**
+	 * Generates a new Point array of length 4 to create a token polygon. 
+	 * Creates a new array of Tokens with a random length, and creates a new 
+	 * Token at a random x and y position for each element in the array. 
+	 * @return an array of Tokens 
+	 */
+	
 	public Tokens[] generateTokens() {
 		int randomX, randomY;
 		int randomNum = (int) (Math.random() * 10) + 5;
@@ -128,6 +165,13 @@ public class ShipGame extends Game {
 		}
 		return things;
 	}
+	
+	/**
+	 * Generates a new Point array of length 4 to create a Obstacle polygon. 
+	 * Creates a new array of Obstacle with a random length, and creates a new 
+	 * obstacle at a random x and y position for each element in the array. 
+	 * @return an array of Obstacle
+	 */
 
 	public Obstacle[] generateObstacle() {
 		int randomX, randomY;
@@ -150,8 +194,19 @@ public class ShipGame extends Game {
 		return things;
 	}
 
+	/**
+	 * Anonymous inner class which implements the ShipGameInterface.
+	 * Provides implementation for collision method. 
+	 */
 	ShipGameInterface shipGame = new ShipGameInterface() {
 		@Override
+		/**
+		 * Checks if the ship and tokens collide. 
+		 * @param s A Ship object 
+		 * @param tokens an array of Tokens 
+		 * @return true if the ship collides with a token 
+		 * @return false if no collision occurs 
+		 */
 		public boolean collision(Ship s, Tokens[] tokens) {
 			for(Tokens t : tokens) {
 				for(Point ship : s.getPoints()) {
@@ -164,7 +219,16 @@ public class ShipGame extends Game {
 			return false;
 		}
 	};
-
+	
+	
+	/**
+	 * A lambda expression that uses the ShipGameInterface to check 
+	 * for collisions between the ship and tokens. 
+	 * @param s A Ship object 
+	 * @param tokens an array of Tokens 
+	 * @return true if the ship collides with a token 
+	 * @return false if no collision occurs 
+	 */
 	ShipGameInterface collision = (s, tokens) ->{
 		for(Tokens t : tokens) {
 			for(Point ship : s.getPoints()) {
@@ -177,8 +241,18 @@ public class ShipGame extends Game {
 		return false;
 	};
 	
+	/**
+	 * Anonymous inner class which implements the ObstacleInterface.
+	 * Provides implementation for collideObstacle method. 
+	 */
 	ObstacleInterface obstacle = new ObstacleInterface() {
 		@Override
+		/**
+		 * Checks if the ship and obstacles collide. 
+		 * @param s A Ship object 
+		 * @return true if the ship collides with an obstacle 
+		 * @return false if no collision occurs 
+		 */
 		public boolean collideObstacle(Ship s) {
 			for(Obstacle o : obstacles) {
 				for(Point ship : s.getPoints()) {
@@ -191,7 +265,13 @@ public class ShipGame extends Game {
 		}
 	};
 	
-	//Lambda expression that deals with Obstacle Collision.
+	/**
+	 * A lambda expression that uses the ObstacleInterface to check 
+	 * for collisions between the ship and obstacles. 
+	 * @param s A Ship object 
+	 * @return true if the ship collides with an obstacle 
+	 * @return false if no collision occurs 
+	 */
 	ObstacleInterface obstacleCollision = (s) -> {
 		for(Obstacle o : obstacles) {
 			for(Point ship : s.getPoints()) {
@@ -203,9 +283,16 @@ public class ShipGame extends Game {
 		return false;
 	};
 
+	/**
+	 * An inner class that keeps track of the score. 
+	 */
 	private class Score {
 		private int score = 0;
 
+		/**
+		 * Increments the score if the user collides with a good token 
+		 * and decrements it if the user collides with a bad token. 
+		 */
 		public void updateScore() {
 			if(collision.collision(user, tokensGood)) {
 				score++;
@@ -213,7 +300,11 @@ public class ShipGame extends Game {
 				score--;
 			}
 		}
-
+		/**
+		 * gets the score and returns it. Sets the score equal to 0 if it 
+		 * is negative. 
+		 * @return the player's score 
+		 */
 		public int getScore() {
 			if(score < 0) {
 				score = 0;
@@ -224,14 +315,24 @@ public class ShipGame extends Game {
 
 	}
 
+	/**
+	 * An inner class that keeps track of if the game is over or not. 
+	 */
 	private class EndGame{
 		
 		public boolean isGameOver = false;
 		
+		/**
+		 * Default constructor sets the isGameOVer instance variable to false. 
+		 */
 		public EndGame() {
 			isGameOver = false;
 		}
 		
+		/**
+		 * The game is over when the user collides with an obstacle or when 
+		 * the time elapsed is greater than 30 seconds. 
+		 */
 		public void isGameOver() {
 			if(obstacleCollision.collideObstacle(user)) {
 				isGameOver = true;
@@ -239,7 +340,10 @@ public class ShipGame extends Game {
 				isGameOver = true;
 			}
 		}
-		
+		/**
+		 * gets the isGameOver instance variable and returns it. 
+		 * @return isGameOver 
+		 */
 		public boolean getGameOver() {
 			return isGameOver;
 		}
