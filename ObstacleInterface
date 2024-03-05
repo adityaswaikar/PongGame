@@ -1,0 +1,6 @@
+package game;
+
+public interface ObstacleInterface {
+
+	public boolean collideObstacle(Ship s);
+}
