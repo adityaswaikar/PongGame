@@ -9,21 +9,17 @@ NOTE: This class is the metaphorical "main method" of your program,
  */
 import java.awt.*;
 
-
-
 public class ShipGame extends Game {
 	private static final long serialVersionUID = 1L;
 
 	static int counter = 0;
-	private boolean isGameOver = false;
+
 
 	Ship user;
-
 	Tokens[] tokensGood, tokensBad;
-	Obstacle obstacle; 
 	Obstacle[] obstacles;
-	
-	private int score = 0;
+	Score score;
+	EndGame e;
 
 	public ShipGame() {
 		super("ShipGame!",1000,1000);
@@ -45,8 +41,10 @@ public class ShipGame extends Game {
 
 
 		user = new Ship(ship, new Point(15, 485), 0);
-		
+
 		this.addKeyListener(user);
+		score = new Score();
+		e = new EndGame();
 
 	}
 
@@ -58,34 +56,49 @@ public class ShipGame extends Game {
 		// counter is incremented and this message printed
 		// each time the canvas is repainted
 		counter++;
-		brush.setColor(Color.white);
-		brush.drawString("Time passed: " + counter/100,10,10);
-		user.move();
-		user.paint(brush);
-		obstacle.paint(brush);
-		for(Obstacle o: obstacles) {
-			brush.setColor(Color.BLUE);
-			o.paint(brush); 
+		e.isGameOver();
+		if(!e.getGameOver()) {
+			brush.setColor(Color.white);
+			brush.drawString("Time passed: " + counter/100,10,10);
+			user.move();
+			user.paint(brush);
+			for(Obstacle o: obstacles) {
+				brush.setColor(Color.BLUE);
+				o.paint(brush); 
+
+			}
+
+			brush.setColor(Color.white);
+			for(Tokens t : tokensGood) {
+				t.paint(brush);
+			}
+
+			brush.setColor(Color.RED);
+			for(Tokens t : tokensBad) {
+				t.paint(brush);
+			}
+
+			if(counter % 200 == 0) {
+				tokensBad = generateTokens();
+				
+			}
 			
-		}
-		
-		
-		for(Tokens t : tokensGood) {
-			t.paint(brush);
-		}
-		
-		brush.setColor(Color.RED);
-		for(Tokens t : tokensBad) {
-			t.paint(brush);
-		}
-		
-		if(counter % 200 == 0) {
-			tokensBad = generateTokens();
-			obstacles = generateObstacle();
-		}
-		
-		if(counter % 400 == 0) {
-			tokensGood = generateTokens();
+			if(counter % 500 == 0) {
+				obstacles = generateObstacle();
+			}
+
+			if(counter % 400 == 0) {
+				tokensGood = generateTokens();
+			}
+
+
+			score.updateScore();
+		} else {
+			brush.setColor(Color.black);
+			brush.fillRect(0,0, width, height);
+			brush.setColor(Color.white);
+			brush.drawString("Game Over!", 450, 250);
+			brush.drawString("Your Score: " + score.getScore(), 445, 350);
 		}
 	}
 
@@ -94,7 +107,7 @@ public class ShipGame extends Game {
 		a.repaint();
 	}
 
-	
+
 
 	public Tokens[] generateTokens() {
 		int randomX, randomY;
@@ -117,9 +130,8 @@ public class ShipGame extends Game {
 	}
 
 	public Obstacle[] generateObstacle() {
-		int randomX = (int) (Math.random() * (751) + 50);
-		int randomY = (int)(Math.random() * (551) + 50);
-		int randomNum = (int) (Math.random() * 10) + 1;
+		int randomX, randomY;
+		int randomNum = (int) (Math.random() * 15) + 5;
 
 		Point [] obstaclePoint = new Point[4];
 		obstaclePoint[0] = new Point(0,0);
@@ -127,22 +139,110 @@ public class ShipGame extends Game {
 		obstaclePoint[2] = new Point(10,10);
 		obstaclePoint[3] = new Point(0, 10);
 
-		obstacle = new Obstacle(obstaclePoint, new Point(randomX, randomY), 0 );
-
 		Obstacle[] things = new Obstacle[randomNum];
-		things[0] = obstacle;
 
-		for(int i = 1; i < randomNum; i++) {
-			int xCount = randomX + (20 * i);
-			things[i] = new Obstacle(obstaclePoint, new Point(xCount, randomY), 0);
+		for(int i = 0; i < randomNum; i++) {
+			randomX = (int) (Math.random() * (900) + 50);
+			randomY = (int)(Math.random() * (900) + 50);
+			things[i] = new Obstacle(obstaclePoint, new Point(randomX, randomY), 0);
 		}
-		
+
 		return things;
 	}
+
+	ShipGameInterface shipGame = new ShipGameInterface() {
+		@Override
+		public boolean collision(Ship s, Tokens[] tokens) {
+			for(Tokens t : tokens) {
+				for(Point ship : s.getPoints()) {
+					if(t.contains(ship)) {
+						t.updatePosition();
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	};
+
+	ShipGameInterface collision = (s, tokens) ->{
+		for(Tokens t : tokens) {
+			for(Point ship : s.getPoints()) {
+				if(t.contains(ship)) {
+					t.updatePosition();
+					return true;
+				}
+			}
+		}
+		return false;
+	};
 	
-	public void isGameOver() {
-		if(counter/100 > 60) {
-			isGameOver = true;
+	ObstacleInterface obstacle = new ObstacleInterface() {
+		@Override
+		public boolean collideObstacle(Ship s) {
+			for(Obstacle o : obstacles) {
+				for(Point ship : s.getPoints()) {
+					if(o.contains(ship)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	};
+	
+	//Lambda expression that deals with Obstacle Collision.
+	ObstacleInterface obstacleCollision = (s) -> {
+		for(Obstacle o : obstacles) {
+			for(Point ship : s.getPoints()) {
+				if(o.contains(ship)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	};
+
+	private class Score {
+		private int score = 0;
+
+		public void updateScore() {
+			if(collision.collision(user, tokensGood)) {
+				score++;
+			} else if(collision.collision(user, tokensBad)) {
+				score--;
+			}
+		}
+
+		public int getScore() {
+			if(score < 0) {
+				score = 0;
+			}
+
+			return score;
+		}
+
+	}
+
+	private class EndGame{
+		
+		public boolean isGameOver = false;
+		
+		public EndGame() {
+			isGameOver = false;
+		}
+		
+		public void isGameOver() {
+			if(obstacleCollision.collideObstacle(user)) {
+				isGameOver = true;
+			} else if(counter/100 > 30){
+				isGameOver = true;
+			}
+		}
+		
+		public boolean getGameOver() {
+			return isGameOver;
 		}
 	}
+
 }
