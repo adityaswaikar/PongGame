@@ -1,5 +1,16 @@
 package game;
 
+/**
+ * ShipGameInterface defines collision method that is implemented 
+ * to determine if a ship has collided with a token. 
+ */
 public interface ShipGameInterface {
+	/**
+     * Checks is a ship collided with an array of tokens. 
+     * @param s The ship object.
+     * @param t An array of tokens.
+     * @return true if the ship and tokens collided. 
+     * @return false if the ship did not collide with any token. 
+     */
 	public boolean collision(Ship s, Tokens[] t);
 }
