@@ -10,12 +10,27 @@ public class Ship extends Polygon implements KeyListener  {
 	private boolean forward = false, left = false, right = false;
 	private int step;
 
-
+	/**
+	 * Creates a new instance of the Ship class with the shape, position, and
+	 * rotation specified by the parameters (using the super constructor).
+	 * Assigns a value to the instance variable step. 
+	 * @param inShape an array of Points for the shape of the ship
+	 * @param inPosition a Point object to represent the position of the ship
+	 * @param inRotation a double variable representing the angle at which the 
+	 * ship is rotated 
+	 */
 	public Ship(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
 		step = 5;
 	}
 
+	/**
+	 * Stores the points of the ship in an array and stores the x coordinates
+	 * and y coordinates of each point in an array. 
+	 * <p>
+	 * Fills a polygon with the x and y coordinates 
+	 * @param brush A Graphics object used to fill the polygon 
+	 */
 
 	void paint(Graphics brush) {
 		int[] xCoord = new int[this.getPoints().length];
@@ -32,23 +47,45 @@ public class Ship extends Polygon implements KeyListener  {
 		brush.fillPolygon(xCoord, yCoord, 7);
 	}
 
-
+	/**
+	 * Retrieves the ship's shape
+	 * @return an array of Points that represents the shape of the ship
+	 */
 	public Point[] getShape() {
 		return getShape();
 	}
 
+	/**
+	 * Retrieves the ship's position
+	 * @return a Point that represents the ship's position
+	 */
 	public Point getPosition() {
 		return position;
 	}
-
+	
+	/**
+	 * Retrieves the ship's rotation
+	 * @return a double that represents the ship's rotation
+	 */
 	public double getRotation() {
 		return rotation;
 	}
 
+	
+	/**
+	 * Used when a key is typed as per the KeyListener interface 
+	 * @param e A KeyEvent object 
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 
 	}
+	
+	/**
+	 * Sets the forward, left, and right variables to true 
+	 * if the appropriate keys are pressed. 
+	 * @param e A KeyEvent object 
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -61,6 +98,12 @@ public class Ship extends Polygon implements KeyListener  {
 			this.left = true;
 		}
 	}
+	
+	/**
+	 * Sets the forward, left, and right variables to false 
+	 * if the appropriate keys are released. 
+	 * @param e A KeyEvent object 
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -74,6 +117,18 @@ public class Ship extends Polygon implements KeyListener  {
 		}
 	}
 	
+	/**
+	 * Handles movement of the ship. 
+	 * <p>
+	 * If the forward variable is true, moves 
+	 * the ship forward in the direction it is rotated. 
+	 * <p> 
+	 * If the right variable is true, rotates the ship a specified number of
+	 * degrees clockwise. 
+	 * <p> 
+	 * If the left variable is true, rotates the ship a specified number of 
+	 * degrees counterclockwise.    
+	 */
 	public void move() {
 		if(forward) {
 			double x = position.x + step * Math.cos(Math.toRadians(rotation));
@@ -95,4 +150,3 @@ public class Ship extends Polygon implements KeyListener  {
 		rotation %= 360;
 	}
 }
-
