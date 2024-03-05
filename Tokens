@@ -1,31 +1,24 @@
 package game;
 
 import java.awt.Graphics;
+import java.util.Random;
 
 public class Tokens extends Polygon{
 	
-	private Point[] inShape;
-	private Point inPosition;
-	private double inRotation;
-	
 	public Tokens(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
-		
-		this.inShape = getPoints();
-		this.inPosition = inPosition;
-		this.inRotation = inRotation;
 		
 	}
 	
 	
 	void paint(Graphics brush) {
-		int[] xCoord = new int[inShape.length];
-		int[] yCoord = new int[inShape.length];
+		int[] xCoord = new int[getPoints().length];
+		int[] yCoord = new int[getPoints().length];
 		
 		
-		for(int i = 0; i < this.inShape.length; i++){
-			xCoord[i] = (int)this.inShape[i].getX();
-			yCoord[i] = (int)this.inShape[i].getY();
+		for(int i = 0; i < this.getPoints().length; i++){
+			xCoord[i] = (int)getPoints()[i].getX();
+			yCoord[i] = (int)getPoints()[i].getY();
 		}
 		
 		
@@ -37,10 +30,18 @@ public class Tokens extends Polygon{
 	}
 	
 	public Point getPosition() {
-		return inPosition;
+		return position;
 	}
 	
 	public double getRotation() {
-		return inRotation;
+		return rotation;
+	}
+	
+	public void updatePosition() {
+		Random rX = new Random(950);
+		Random rY = new Random(900);
+
+		position.x = rX.nextInt();
+		position.y = rY.nextInt();
 	}
 }
