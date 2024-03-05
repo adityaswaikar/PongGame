@@ -4,13 +4,26 @@ import java.awt.Graphics;
 import java.util.Random;
 
 public class Tokens extends Polygon{
-	
+	/**
+	 * Creates a new instance of the Tokens class with the shape, position, and
+	 * rotation specified by the parameters (using the super constructor).
+	 * @param inShape an array of Points for the shape of the token
+	 * @param inPosition a Point object to represent the position of the token
+	 * @param inRotation a double variable representing the angle at which the 
+	 * token is rotated 
+	 */
 	public Tokens(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
 		
 	}
 	
-	
+	/**
+	 * Stores the points of the token in an array and stores the x coordinates
+	 * and y coordinates of each point in an array. 
+	 * <p>
+	 * Fills a polygon with the x and y coordinates 
+	 * @param brush A Graphics object used to fill the polygon 
+	 */
 	void paint(Graphics brush) {
 		int[] xCoord = new int[getPoints().length];
 		int[] yCoord = new int[getPoints().length];
@@ -25,18 +38,35 @@ public class Tokens extends Polygon{
 		brush.fillPolygon(xCoord, yCoord, 4);
 	}
 	
+	/**
+	 * Retrieves the token's shape
+	 * @return an array of Points that represents the shape of the token
+	 */
 	public Point[] getShape() {
 		return getShape();
 	}
 	
+	/**
+	 * Retrieves the token's position
+	 * @return a Point that represents the token's position
+	 */
 	public Point getPosition() {
 		return position;
 	}
 	
+	/**
+	 * Retrieves the token's rotation
+	 * @return a double that represents the token's rotation
+	 */
 	public double getRotation() {
 		return rotation;
 	}
 	
+	
+	/**
+	 * Updates the position of the token to a random x and y coordinate that 
+	 * lies within the boundaries of the game window.
+	 */
 	public void updatePosition() {
 		Random rX = new Random(950);
 		Random rY = new Random(900);
