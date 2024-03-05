@@ -1,6 +1,15 @@
 package game;
 
+/**
+ * ObstacleInterface defines collideObstacle method that is implemented 
+ * to determine if a ship has collided with an obstacle.
+ */
 public interface ObstacleInterface {
-
+	/**
+     * Checks is a ship collided with an obstacle
+     * @param s The ship object.
+     * @return true if the ship and obstacles collided. 
+     * @return false if the ship did not collide with any obstacle. 
+     */
 	public boolean collideObstacle(Ship s);
 }
