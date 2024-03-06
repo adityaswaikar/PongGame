@@ -1,6 +1,7 @@
 package game;
 
 /**
+ * @author Aditya Waikar and Medhini Murali
  * ShipGameInterface defines collision method that is implemented 
  * to determine if a ship has collided with a token. 
  */
