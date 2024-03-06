@@ -11,6 +11,7 @@ public class Ship extends Polygon implements KeyListener  {
 	private int step;
 
 	/**
+	 * @author Aditya Waikar and Medhini Murali
 	 * Creates a new instance of the Ship class with the shape, position, and
 	 * rotation specified by the parameters (using the super constructor).
 	 * Assigns a value to the instance variable step. 
