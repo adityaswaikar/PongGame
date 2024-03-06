@@ -1,7 +1,7 @@
 package game;
 
 /*
- * @author Aditya Waikar and Medhini Murali
+ * @author Aditya Waikar and Medhini Muralidharan
  * CLASS: YourGameNameoids
  * DESCRIPTION: Extending Game, YourGameName is all in the paint method.
  * NOTE: This class is the metaphorical "main method" of your program,
