@@ -3,6 +3,7 @@ package game;
 import java.awt.event.KeyEvent;
 
 /**
+ * Aditya Waikar and Medhini Murali
  * KeyListenerInterface defines the keyPressed, keyReleased and keyTyped methods
  * to implement so that the ship moves based on keyboard input 
  */
