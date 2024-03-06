@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 public class Obstacle extends Polygon {
 	/**
-	 * @author Aditya Waikar and Medhini Murali
+	 * @author Aditya Waikar and Medhini Muralidharan
 	 * Creates a new instance of the Obstacle class with the shape, position,
 	 * and rotation specified by the parameters (using the super constructor).
 	 * @param inShape an array of Points for the shape of the obstacle
