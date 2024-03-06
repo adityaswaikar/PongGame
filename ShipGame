@@ -86,6 +86,7 @@ public class ShipGame extends Game {
 		if(!e.getGameOver()) {
 			brush.setColor(Color.white);
 			brush.drawString("Time passed: " + counter/100,10,10);
+			brush.drawString("Your Score: " + score.getScore(),970,10);
 			user.move();
 			user.paint(brush);
 			for(Obstacle o: obstacles) {
